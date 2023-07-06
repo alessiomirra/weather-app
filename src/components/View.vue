@@ -22,15 +22,47 @@
         <div v-if="errors == true" class="mt-3">
             <div class="alert alert-danger text-center" role="alert">
                 <p>Network Errors</p>
-                <p>Check the city name</p>
+                <p>Check city name</p>
             </div>
         </div>
 
         <div v-if="data && errors == false" class="mt-3 text-center">
             <h3>{{ data.name }}, {{ data.sys.country }}</h3>
             <img :src="iconUrl" alt="#">
-            <h5>{{ data.weather[0].description }}</h5>
-            <p class="text-muted">Temperature: {{ data.main.temp }}</p>
+            <h5 class="text-uppercase">{{ data.weather[0].description }}</h5>
+            <p class="text-muted">Temperature: {{ data.main.temp }}°C</p>
+
+            <!-- Table -->
+            <div class="border border-secondary p-2 rounded-5">
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <h6>Humidity</h6>
+                        <p>{{ data.main.humidity }}%</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Temperature Max</h6>
+                        <p>{{ data.main.temp_max }}°C</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Temperature Min</h6>
+                        <p>{{ data.main.temp_min }}°C</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>Pressure</h6>
+                        <p>{{ data.main.pressure }} mBar</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Sunrise</h6>
+                        <p>{{ sunrise }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Sunset</h6>
+                        <p>{{ sunset }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -49,6 +81,8 @@ export default({
             city: 'Roma, IT', 
             data: '',
             iconUrl: '', 
+            sunrise: '', 
+            sunset: '', 
         }
     }, 
     methods: {
@@ -60,9 +94,11 @@ export default({
 
             axios 
                 .get(api_url)
-                .then(response => {
+                .then(response => { 
                     this.data = response.data; 
                     this.iconUrl = `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@4x.png`; 
+                    this.sunrise = this.getTime(response.data.sys.sunrise);
+                    this.sunset = this.getTime(response.data.sys.sunset);
                     this.loading = false; 
                     this.showForm = false; 
                 })
@@ -71,7 +107,17 @@ export default({
                     this.loading = false; 
 
                 })
-        }
+        }, 
+        getTime(timestamp){
+            let date = new Date(timestamp * 1000); 
+
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            
+            let formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0')
+
+            return formattedTime
+        }, 
     }, 
     created(){
         this.getWeatherData(); 
@@ -82,7 +128,7 @@ export default({
 <style scoped>
 .main{
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
 }
 .form-container{
     width: 100%;
