@@ -1,7 +1,7 @@
 <template>
-    <div class="container main mt-2">
+    <div class="container main">
         
-        <div class="text-center mt-5">
+        <div class="text-center mt-3">
             <button class="btn btn-danger" @click="showForm=!showForm">Change City</button>
         </div>
         <div v-if="showForm" class="form-container d-flex justify-content-center">
