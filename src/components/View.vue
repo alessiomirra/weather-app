@@ -89,7 +89,7 @@ export default({
         getWeatherData(){
             this.loading = true;
             this.errors = false; 
-            const API_KEY = 'e9557e52931333efd6702b6532134e35'; 
+            const API_KEY = 'WEATHER_API_KEY'; 
             const api_url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${API_KEY}&units=metric`;
 
             axios 
