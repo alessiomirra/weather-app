@@ -70,6 +70,7 @@
 
 <script>
 import axios from 'axios';
+import {keys} from '@/keys.js'
 
 export default({
     name: 'MainView', 
@@ -89,7 +90,7 @@ export default({
         getWeatherData(){
             this.loading = true;
             this.errors = false; 
-            const API_KEY = 'WEATHER_API_KEY'; 
+            const API_KEY = keys.WEATHER_API_KEY;  
             const api_url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${API_KEY}&units=metric`;
 
             axios 
